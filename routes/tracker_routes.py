@@ -1,5 +1,4 @@
 from fastapi import APIRouter
-from sqlalchemy.orm import Session
 from database import SessionLocal
 import models
 import uuid
@@ -7,14 +6,14 @@ import uuid
 router = APIRouter()
 
 # -------------------------
-# POST API (SAVE DATA)
+# POST API → /tracker
 # -------------------------
-@router.post("/period")
-def create_period(data: dict):
+@router.post("/tracker")
+def create_tracker(data: dict):
 
     db = SessionLocal()
 
-    new_data = models.Period(
+    new_record = models.Period(
         id=str(uuid.uuid4()),
         user_id=data.get("user_id"),
         period_start_date=data.get("period_start_date"),
@@ -23,24 +22,24 @@ def create_period(data: dict):
         has_no_idea=data.get("has_no_idea"),
         cycle_length_days=data.get("cycle_length_days"),
         period_length_days=data.get("period_length_days"),
-        notes=data.get("notes"),
+        notes=data.get("notes")
     )
 
-    db.add(new_data)
+    db.add(new_record)
     db.commit()
-    db.refresh(new_data)
+    db.refresh(new_record)
 
     return {
-        "message": "Data saved successfully",
-        "id": new_data.id
+        "message": "Tracker saved successfully",
+        "id": new_record.id
     }
 
 
 # -------------------------
-# GET API (FETCH DATA)
+# GET API → /track
 # -------------------------
-@router.get("/periods")
-def get_periods(limit: int = 50, offset: int = 0):
+@router.get("/track")
+def get_track(limit: int = 50, offset: int = 0):
 
     db = SessionLocal()
 
