@@ -53,7 +53,7 @@ def get_track(limit: int = 50, offset: int = 0):
         result.append({
             "id": item.id,
             "user_id": item.user_id,
-            "period_start_date": item.period_start_date,
+            "period_start_date": item.last_period_start_date,
             "period_end_date": item.period_end_date,
             "selected_dates": eval(item.selected_dates) if item.selected_dates else [],
             "has_no_idea": item.has_no_idea,
